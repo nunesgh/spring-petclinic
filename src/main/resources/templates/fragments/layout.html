@@ -59,6 +59,18 @@
             <span th:text="#{error}">Error</span>
           </li>
 
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="fa fa-user" aria-hidden="true"></span>
+                <span th:text="${currentUserRole}">Guest</span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/switch-user?role=ADMIN">Switch to Admin</a></li>
+                <li><a class="dropdown-item" href="/switch-user?role=USER">Switch to User</a></li>
+                <li><a class="dropdown-item" href="/switch-user?role=GUEST">Switch to Guest</a></li>
+            </ul>
+          </li>
+
         </ul>
       </div>
     </div>
