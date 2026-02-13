@@ -35,8 +35,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.samples.petclinic.cedar.CedarService;
 
 /**
  * @author Juergen Hoeller
@@ -52,8 +54,11 @@ class OwnerController {
 
 	private final OwnerRepository owners;
 
-	public OwnerController(OwnerRepository owners) {
+	private final CedarService cedarService;
+
+	public OwnerController(OwnerRepository owners, CedarService cedarService) {
 		this.owners = owners;
+		this.cedarService = cedarService;
 	}
 
 	@InitBinder
@@ -134,7 +139,15 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")
-	public String initUpdateOwnerForm() {
+	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, HttpSession session) {
+		String role = (String) session.getAttribute("currentUserRole");
+		if (role == null)
+			role = "GUEST";
+
+		if (!cedarService.checkAccess(role, "edit", "owners")) {
+			return "redirect:/oups";
+		}
+
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 

@@ -156,6 +156,13 @@
       <artifactId>testcontainers-mysql</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+        <groupId>com.cedarpolicy</groupId>
+        <artifactId>cedar-java</artifactId>
+        <version>4.8.0</version>
+        <classifier>uber</classifier>
+    </dependency>
   </dependencies>
 
   <build>
