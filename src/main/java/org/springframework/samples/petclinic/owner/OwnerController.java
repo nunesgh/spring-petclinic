@@ -186,4 +186,51 @@ class OwnerController {
 		return mav;
 	}
 
+	private String buildMessage(String role, Integer id, String action, String explanation, String subject,
+			Integer subjectId) {
+		final StringBuilder sb = new StringBuilder();
+		if (subject.equals("none") && subjectId.equals(0)) {
+			sb.append("Role ")
+				.append(role)
+				.append(" (ID: ")
+				.append(id)
+				.append(") cannot ")
+				.append(action)
+				.append(" this page.");
+		}
+		else {
+			sb.append("Role ")
+				.append(role)
+				.append(" (ID: ")
+				.append(id)
+				.append(") cannot ")
+				.append(action)
+				.append(" ")
+				.append(subject)
+				.append(" (ID: ")
+				.append(subjectId)
+				.append(").");
+		}
+		if (!explanation.equals("")) {
+			sb.append(" ").append(explanation);
+		}
+		String message = sb.toString();
+		return message;
+	}
+
+	private String buildMessage(String role, Integer id, String action, String subject, Integer subjectId) {
+		String message = buildMessage(role, id, action, "", subject, subjectId);
+		return message;
+	}
+
+	private String buildMessage(String role, Integer id, String action, String explanation) {
+		String message = buildMessage(role, id, action, explanation, "none", 0);
+		return message;
+	}
+
+	private String buildMessage(String role, Integer id, String action) {
+		String message = buildMessage(role, id, action, "", "none", 0);
+		return message;
+	}
+
 }
