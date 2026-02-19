@@ -39,6 +39,9 @@ public class Visit extends BaseEntity {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
+	@Column(name = "vet_id")
+	private Integer vet;
+
 	@NotBlank
 	private String description;
 
@@ -55,6 +58,14 @@ public class Visit extends BaseEntity {
 
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+
+	public Integer getVet() {
+		return this.vet;
+	}
+
+	public void setVet(Integer vet) {
+		this.vet = vet;
 	}
 
 	public String getDescription() {
