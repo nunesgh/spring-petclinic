@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.owner;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +41,11 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.samples.petclinic.cedar.CedarService;
+import com.cedarpolicy.value.Value;
+import com.cedarpolicy.value.PrimLong;
+
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author Juergen Hoeller
@@ -75,7 +82,23 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/new")
-	public String initCreationForm() {
+	public String initCreationForm(HttpSession session) {
+		Map<String, Value> context = new HashMap<>();
+		String role = (String) session.getAttribute("currentUserRole");
+		Integer id = (Integer) session.getAttribute("currentUserId");
+		if (role == null) {
+			role = "GUEST";
+			id = -1;
+		}
+		context.put("currentUser", new PrimLong(id));
+		// context.put("currentOwner", new PrimLong(ownerId));
+
+		if (!cedarService.checkAccess(role, "edit", "owners", context)) {
+			// return "redirect:/oups";
+			String message = buildMessage(role, id, "view");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, message);
+		}
+
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
@@ -92,17 +115,54 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/find")
-	public String initFindForm() {
+	public String initFindForm(HttpSession session) {
+		Map<String, Value> context = new HashMap<>();
+		String role = (String) session.getAttribute("currentUserRole");
+		Integer id = (Integer) session.getAttribute("currentUserId");
+		if (role == null) {
+			role = "GUEST";
+			id = -1;
+		}
+		context.put("currentUser", new PrimLong(id));
+		// context.put("currentOwner", new PrimLong(ownerId));
+
+		if (!cedarService.checkAccess(role, "preview", "owners", context)) {
+			// return "redirect:/oups";
+			String message = buildMessage(role, id, "preview");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, message);
+		}
+
 		return "owners/findOwners";
 	}
 
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
-			Model model) {
+			Model model, HttpSession session) {
+		Map<String, Value> context = new HashMap<>();
+		String role = (String) session.getAttribute("currentUserRole");
+		Integer id = (Integer) session.getAttribute("currentUserId");
+		if (role == null) {
+			role = "GUEST";
+			id = -1;
+		}
+		context.put("currentUser", new PrimLong(id));
+		// context.put("currentOwner", new PrimLong(ownerId));
+
+		if (!cedarService.checkAccess(role, "preview", "owners", context)) {
+			// return "redirect:/oups";
+			String message = buildMessage(role, id, "preview");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, message);
+		}
+
 		// allow parameterless GET request for /owners to return all records
 		String lastName = owner.getLastName();
 		if (lastName == null) {
 			lastName = ""; // empty string signifies broadest possible search
+		}
+		if ((lastName == "") && (!cedarService.checkAccess(role, "admin", "owners", context))) {
+			// lastName = "-1";
+			String message = buildMessage(role, id, "view", "Please provide a search input.");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, message);
 		}
 
 		// find owners by last name
@@ -140,12 +200,21 @@ class OwnerController {
 
 	@GetMapping("/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, HttpSession session) {
+		Map<String, Value> context = new HashMap<>();
 		String role = (String) session.getAttribute("currentUserRole");
-		if (role == null)
+		Integer id = (Integer) session.getAttribute("currentUserId");
+		if (role == null) {
 			role = "GUEST";
+			id = -1;
+		}
+		context.put("currentUser", new PrimLong(id));
+		context.put("currentOwner", new PrimLong(ownerId));
 
-		if (!cedarService.checkAccess(role, "edit", "owners")) {
-			return "redirect:/oups";
+		// In the future, use "ownerId" to allow only specific vets.
+		if (!cedarService.checkAccess(role, "edit", "owners", context)) {
+			// return "redirect:/oups";
+			String message = buildMessage(role, id, "edit", "Owner", ownerId);
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, message);
 		}
 
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
@@ -177,12 +246,31 @@ class OwnerController {
 	 * @return a ModelMap with the model attributes for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
-	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
+	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId, HttpSession session) {
+		Map<String, Value> context = new HashMap<>();
+		String role = (String) session.getAttribute("currentUserRole");
+		Integer id = (Integer) session.getAttribute("currentUserId");
+		if (role == null) {
+			role = "GUEST";
+			id = -1;
+		}
+		context.put("currentUser", new PrimLong(id));
+		context.put("currentOwner", new PrimLong(ownerId));
+
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		Optional<Owner> optionalOwner = this.owners.findById(ownerId);
-		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
-				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
-		mav.addObject(owner);
+
+		if (cedarService.checkAccess(role, "view", "owners", context)) {
+			Optional<Owner> optionalOwner = this.owners.findById(ownerId);
+			Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
+					"Owner not found with id: " + ownerId + ". Please ensure the ID is correct."));
+			mav.addObject(owner);
+		}
+		else {
+			Optional<Owner> optionalOwner = this.owners.findById(-1);
+			String message = buildMessage(role, id, "view", "Owner", ownerId);
+			Owner owner = optionalOwner.orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, message));
+			mav.addObject(owner);
+		}
 		return mav;
 	}
 

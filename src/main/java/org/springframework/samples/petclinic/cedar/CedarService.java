@@ -7,6 +7,8 @@ import com.cedarpolicy.model.policy.PolicySet;
 import com.cedarpolicy.value.EntityUID;
 import com.cedarpolicy.model.Context;
 
+import com.cedarpolicy.value.Value;
+
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,6 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
+
+import java.util.Optional;
 
 @Service
 public class CedarService {
@@ -33,8 +38,8 @@ public class CedarService {
 		}
 	}
 
-	public boolean checkAccess(String userRole, String actionType, String resourceId) {
-		Context context = new Context(Collections.emptyMap());
+	public boolean checkAccess(String userRole, String actionType, String resourceId, Map<String, Value> context) {
+		// Context context = new Context(Collections.emptyMap()); // Now as input!
 
 		AuthorizationRequest request = new AuthorizationRequest(
 				EntityUID.parse("PetClinic::Role::\"" + userRole + "\"").get(),
@@ -43,6 +48,7 @@ public class CedarService {
 
 		try {
 			AuthorizationResponse response = engine.isAuthorized(request, this.policySet, new HashSet<>());
+			System.out.println(response); // For testing only!
 			return response.toString().contains("Allow");
 		}
 		catch (Exception e) {
