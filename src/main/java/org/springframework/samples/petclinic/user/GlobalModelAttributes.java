@@ -13,4 +13,10 @@ public class GlobalModelAttributes {
 		return (role != null) ? role : "GUEST";
 	}
 
+	@ModelAttribute("currentUserId")
+	public Integer populateUserId(HttpSession session) {
+		Integer id = (Integer) session.getAttribute("currentUserId");
+		return (id != null) ? id : -1;
+	}
+
 }
