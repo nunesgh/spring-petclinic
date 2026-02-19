@@ -59,6 +59,17 @@
             <span th:text="#{error}">Error</span>
           </li>
 
+        </ul>
+
+        <ul class="nav navbar-nav me-auto align-items-right">
+
+          <li class="nav-item d-flex align-items-center">
+            <span class="navbar-text text-light ms-3"
+                  th:if="${currentUserId != null}"
+                  th:text="|Active User ID: ${currentUserId}|">
+            </span>
+          </li>
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="fa fa-user" aria-hidden="true"></span>
@@ -71,7 +82,7 @@
                 <li><a class="dropdown-item" href="/switch-user?role=GUEST">Switch to Guest</a></li>
             </ul>
           </li>
-
+          
         </ul>
       </div>
     </div>
