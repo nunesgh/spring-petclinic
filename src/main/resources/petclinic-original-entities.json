@@ -1,0 +1,306 @@
+[
+  {
+    "uid": { "type": "PetClinic::Role", "id": "Veterinarian" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Role", "id": "Owner" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Specialty", "id": "Dentistry" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Specialty", "id": "Radiology" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Specialty", "id": "Surgery" },
+    "attrs": { },
+    "parents": [ ]
+  },
+
+
+  {
+    "uid": { "type": "PetClinic::PetType", "id": "Bird" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::PetType", "id": "Cat" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::PetType", "id": "Dog" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::PetType", "id": "Hamster" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::PetType", "id": "Lizard" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::PetType", "id": "Snake" },
+    "attrs": { },
+    "parents": [ ]
+  },
+
+
+  {
+    "uid": { "type": "PetClinic::User", "id": "George Franklin" },
+    "attrs": {
+        "firstName": "George",
+        "lastName": "Franklin",
+        "role": [
+            { "__entity": { "type": "PetClinic::Role", "id": "Owner"} }
+        ],
+        "database": "owners",
+        "id": 1
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::User", "id": "Jean Coleman" },
+    "attrs": {
+        "firstName": "Jean",
+        "lastName": "Coleman",
+        "role": [
+            { "__entity": { "type": "PetClinic::Role", "id": "Owner"} }
+        ],
+        "database": "owners",
+        "id": 6
+    },
+    "parents": [ ]
+  },
+
+
+  {
+    "uid": { "type": "PetClinic::Pet", "id": "Leo" },
+    "attrs": {
+        "name": "Leo",
+        "type": { "__entity": { "type": "PetClinic::PetType", "id": "Cat"} },
+        "birthDate": { "__extn": { "fn": "datetime", "arg": "2010-09-07" } },
+        "owner": { "__entity": { "type": "PetClinic::User", "id": "George Franklin"} },
+        "database": "pets",
+        "id": 1
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Pet", "id": "Samantha" },
+    "attrs": {
+        "name": "Samantha",
+        "type": { "__entity": { "type": "PetClinic::PetType", "id": "Cat"} },
+        "birthDate": { "__extn": { "fn": "datetime", "arg": "2012-09-04" } },
+        "owner": { "__entity": { "type": "PetClinic::User", "id": "Jean Coleman"} },
+        "database": "pets",
+        "id": 7
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Pet", "id": "Max" },
+    "attrs": {
+        "name": "Max",
+        "type": { "__entity": { "type": "PetClinic::PetType", "id": "Cat"} },
+        "birthDate": { "__extn": { "fn": "datetime", "arg": "2012-09-04" } },
+        "owner": { "__entity": { "type": "PetClinic::User", "id": "Jean Coleman"} },
+        "database": "pets",
+        "id": 8
+    },
+    "parents": [ ]
+  },
+
+
+  {
+    "uid": { "type": "PetClinic::Visit", "id": "Samantha-1" },
+    "attrs": {
+        "pet": { "__entity": { "type": "PetClinic::Pet", "id": "Samantha"} },
+        "database": "visits",
+        "id": 1
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Visit", "id": "Max-1" },
+    "attrs": {
+        "pet": { "__entity": { "type": "PetClinic::Pet", "id": "Max"} },
+        "database": "visits",
+        "id": 2
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Visit", "id": "Max-2" },
+    "attrs": {
+        "pet": { "__entity": { "type": "PetClinic::Pet", "id": "Max"} },
+        "database": "visits",
+        "id": 3
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Visit", "id": "Samantha-2" },
+    "attrs": {
+        "pet": { "__entity": { "type": "PetClinic::Pet", "id": "Samantha"} },
+        "database": "visits",
+        "id": 4
+    },
+    "parents": [ ]
+  },
+
+
+  {
+    "uid": { "type": "PetClinic::Database", "id": "Owners" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Database", "id": "Pets" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Database", "id": "Visits" },
+    "attrs": { },
+    "parents": [ ]
+  },
+
+
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "Home" },
+    "attrs": {
+        "hasAction": false
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "FindOwners" },
+    "attrs": {
+        "hasAction": true
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "Owners" },
+    "attrs": {
+        "hasAction": false
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "Owner" },
+    "attrs": {
+        "hasAction": true
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "EditOwner" },
+    "attrs": {
+        "hasAction": true
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "AddNewPet" },
+    "attrs": {
+        "hasAction": true
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "EditPet" },
+    "attrs": {
+        "hasAction": true
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "AddVisit" },
+    "attrs": {
+        "hasAction": true
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "AddOwner" },
+    "attrs": {
+        "hasAction": true
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "Veterinarians" },
+    "attrs": {
+        "hasAction": false
+    },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::WebPage", "id": "Error" },
+    "attrs": {
+        "hasAction": false
+    },
+    "parents": [ ]
+  },
+
+
+  {
+    "uid": { "type": "PetClinic::Action", "id": "ReadFromDatabase" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Action", "id": "WriteToDatabase" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Action", "id": "ViewWebPage" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Action", "id": "FindOwner" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Action", "id": "AddOwner" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Action", "id": "EditOwner" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Action", "id": "AddPet" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Action", "id": "EditPet" },
+    "attrs": { },
+    "parents": [ ]
+  },
+  {
+    "uid": { "type": "PetClinic::Action", "id": "AddVisit" },
+    "attrs": { },
+    "parents": [ ]
+  }
+]

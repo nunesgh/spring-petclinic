@@ -1,0 +1,93 @@
+namespace PetClinic {
+	entity Role enum [ "Veterinarian", "Owner" ];
+	entity Specialty enum [ "Dentistry", "Radiology", "Surgery" ];
+	entity PetType enum [ "Bird", "Cat", "Dog", "Hamster", "Lizard", "Snake" ];
+
+	entity User = {
+		firstName: String,
+		lastName: String,
+		role: Set<Role>,
+		specialty?: Set<Specialty>,
+		database?: String,
+		databaseRow?: Long,
+	};
+
+	entity Pet = {
+		name: String,
+		type: PetType,
+		birthDate: datetime,
+		owner: User,
+		database?: String,
+		databaseRow?: Long,
+	};
+
+    entity Visit = {
+        pet: Pet,
+		database?: String,
+		databaseRow?: Long,
+    };
+
+    entity Database = { };
+
+    entity WebPage = {
+        hasAction: Bool,
+    };
+
+    action ReadFromDatabase appliesTo {
+        principal: User,
+        resource: Database,
+        context: {
+            webPage: WebPage
+        }
+    };
+
+    action WriteToDatabase appliesTo {
+        principal: User,
+        resource: Database,
+        context: {
+            webPage: WebPage
+        }
+    };
+
+    action ViewWebPage appliesTo {
+        principal: User,
+        resource: WebPage,
+        context: { }
+    };
+
+    action FindOwner appliesTo {
+        principal: User,
+        resource: [Database, WebPage],
+        context: { }
+    };
+
+    action AddOwner appliesTo {
+        principal: User,
+        resource: [Database, WebPage],
+        context: { }
+    };
+
+    action EditOwner appliesTo {
+        principal: User,
+        resource: [Database, WebPage],
+        context: { }
+    };
+
+    action AddPet appliesTo {
+        principal: User,
+        resource: [Database, WebPage],
+        context: { }
+    };
+
+    action EditPet appliesTo {
+        principal: User,
+        resource: [Database, WebPage],
+        context: { }
+    };
+
+    action AddVisit appliesTo {
+        principal: User,
+        resource: [Database, WebPage],
+        context: { }
+    };
+}

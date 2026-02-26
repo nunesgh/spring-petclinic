@@ -1,0 +1,40 @@
+// === View
+//   + Anyone can view any web page.
+permit (
+    principal is PetClinic::User,
+    action == PetClinic::Action::"ReadFromDatabase",
+    resource is PetClinic::Database
+);
+permit (
+    principal is PetClinic::User,
+    action == PetClinic::Action::"ViewWebPage",
+    resource is PetClinic::WebPage
+);
+
+//  + Anyone can use the "FindOwner" action.
+permit (
+    principal is PetClinic::User,
+    action == PetClinic::Action::"FindOwner",
+    resource is PetClinic::WebPage)
+when {
+    resource.hasAction
+};
+
+// === Add or Edit
+//   + Anyone can add to or edit any database.
+permit (
+    principal is PetClinic::User,
+    action == PetClinic::Action::"WriteToDatabase",
+    resource is PetClinic::Database)
+when {
+    context.webPage.hasAction
+};
+permit (
+    principal is PetClinic::User,
+    action in [PetClinic::Action::"AddOwner", PetClinic::Action::"AddPet",
+                PetClinic::Action::"AddVisit", PetClinic::Action::"EditOwner",
+                PetClinic::Action::"EditPet"],
+    resource is PetClinic::WebPage)
+when {
+    resource.hasAction
+};
