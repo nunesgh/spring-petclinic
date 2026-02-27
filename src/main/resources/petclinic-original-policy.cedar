@@ -1,17 +1,19 @@
 // === View
-//   + Anyone can view any web page.
+//   + Anyone can view any entry from any database.
 permit (
     principal is PetClinic::User,
     action == PetClinic::Action::"ReadFromDatabase",
     resource is PetClinic::Database
 );
+
+//   + Anyone can view any web page.
 permit (
     principal is PetClinic::User,
     action == PetClinic::Action::"ViewWebPage",
     resource is PetClinic::WebPage
 );
 
-//  + Anyone can use the "FindOwner" action.
+//  + Anyone can perform the "FindOwner" action.
 permit (
     principal is PetClinic::User,
     action == PetClinic::Action::"FindOwner",
@@ -29,6 +31,9 @@ permit (
 when {
     context.webPage.hasAction
 };
+
+//   + Anyone can perform the actions: "AddOwner", "AddPet", "AddVisit",
+//                                      "EditOwner", and "EditPet".
 permit (
     principal is PetClinic::User,
     action in [PetClinic::Action::"AddOwner", PetClinic::Action::"AddPet",

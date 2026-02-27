@@ -57,37 +57,37 @@ namespace PetClinic {
 
     action FindOwner appliesTo {
         principal: User,
-        resource: [Database, WebPage],
+        resource: WebPage,
         context: { }
     };
 
     action AddOwner appliesTo {
         principal: User,
-        resource: [Database, WebPage],
+        resource: WebPage,
         context: { }
     };
 
     action EditOwner appliesTo {
         principal: User,
-        resource: [Database, WebPage],
+        resource: WebPage,
         context: { }
     };
 
     action AddPet appliesTo {
         principal: User,
-        resource: [Database, WebPage],
+        resource: WebPage,
         context: { }
     };
 
     action EditPet appliesTo {
         principal: User,
-        resource: [Database, WebPage],
+        resource: WebPage,
         context: { }
     };
 
     action AddVisit appliesTo {
         principal: User,
-        resource: [Database, WebPage],
+        resource: WebPage,
         context: { }
     };
 }
