@@ -4,8 +4,7 @@ namespace PetClinic {
 	entity PetType enum [ "Bird", "Cat", "Dog", "Hamster", "Lizard", "Snake" ];
 
 	entity User = {
-		firstName: String,
-		lastName: String,
+		name: String,
 		role: Set<Role>,
 		specialty?: Set<Specialty>,
 		database?: String,

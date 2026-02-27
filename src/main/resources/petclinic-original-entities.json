@@ -61,8 +61,7 @@
   {
     "uid": { "type": "PetClinic::User", "id": "George Franklin" },
     "attrs": {
-        "firstName": "George",
-        "lastName": "Franklin",
+        "name": "George Franklin",
         "role": [
             { "__entity": { "type": "PetClinic::Role", "id": "Owner"} }
         ],
@@ -74,8 +73,7 @@
   {
     "uid": { "type": "PetClinic::User", "id": "Jean Coleman" },
     "attrs": {
-        "firstName": "Jean",
-        "lastName": "Coleman",
+        "name": "Jean Coleman",
         "role": [
             { "__entity": { "type": "PetClinic::Role", "id": "Owner"} }
         ],
